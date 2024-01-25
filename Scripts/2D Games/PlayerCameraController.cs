@@ -26,7 +26,7 @@ public class PlayerCameraController : MonoBehaviour
     void Start()
     {
         playerController = gameObject.GetComponent<PlayerController>();
-        playerController.GetCameraValues(out rb, out maxPlayerSpeed);
+        rb = GetComponent<Rigidbody>();
     }
 
     // Update is called once per frame
