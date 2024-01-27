@@ -16,5 +16,11 @@ namespace Tools.Scripts.Scriptable_Objects
         {
             value = !value;
         }
+
+        public bool ReturnValue()
+        {
+            return value;
+        }
+        
     }
 }
