@@ -5,22 +5,27 @@ using System.Globalization;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using Tools.Scripts.Scriptable_Objects;
+using UnityEngine.Events;
 
 [RequireComponent(typeof(TextMeshProUGUI))]
 public class TextLabelBehavior : MonoBehaviour
 {
-    public TextMeshProUGUI label;
-    public FloatDataScriptableObject dataObj;
+    private TextMeshProUGUI label;
+    public UnityEvent startEvent;
 
     private void Start()
     {
         label = GetComponent<TextMeshProUGUI>();
-        label.text = dataObj.value.ToString(CultureInfo.InvariantCulture);
-        UpdateLabel();
+        startEvent.Invoke();
     }
 
-    public void UpdateLabel()
+    public void UpdateLabel(FloatDataScriptableObject obj)
     {
-        label.text = dataObj.value.ToString(CultureInfo.InvariantCulture);
+        label.text = obj.value.ToString(CultureInfo.InvariantCulture);
+    }
+    public void UpdateLabel(IntDataScriptableObject obj)
+    {
+        label.text = obj.value.ToString(CultureInfo.InvariantCulture);
     }
 }

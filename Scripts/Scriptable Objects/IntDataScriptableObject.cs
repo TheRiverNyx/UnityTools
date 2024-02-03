@@ -1,4 +1,6 @@
+using System;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace Tools.Scripts.Scriptable_Objects
 {
@@ -6,6 +8,7 @@ namespace Tools.Scripts.Scriptable_Objects
     public class IntDataScriptableObject : ScriptableObject
     {
         public int value;
+        public UnityEvent disableEvent;
 
         public void UpdateValue(int num)
         {
@@ -15,6 +18,22 @@ namespace Tools.Scripts.Scriptable_Objects
         public void SetValue(int num)
         {
             value = num;
+        }
+
+        public void SetValueObj(IntDataScriptableObject obj)
+        {
+            value = obj.value;
+        }
+
+        public void CompareValue(IntDataScriptableObject obj)
+        {
+            if (value >= obj.value)
+            {
+            }
+            else
+            {
+                value = obj.value;
+            }
         }
 
         public int ReturnValue()
@@ -30,6 +49,11 @@ namespace Tools.Scripts.Scriptable_Objects
         public void ResetValue()
         {
             value = 0;
+        }
+
+        private void OnDisable()
+        {
+            disableEvent.Invoke();
         }
     }
 }
