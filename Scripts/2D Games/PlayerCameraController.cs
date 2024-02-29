@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Serialization;
 
-[RequireComponent(typeof(PlayerController))]
 public class PlayerCameraController : MonoBehaviour
 {
     private PlayerController playerController;
