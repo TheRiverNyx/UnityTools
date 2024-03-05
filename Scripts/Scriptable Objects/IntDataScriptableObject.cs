@@ -1,10 +1,9 @@
-using System;
 using UnityEngine;
 using UnityEngine.Events;
 
 namespace Tools.Scripts.Scriptable_Objects
 {
-    [CreateAssetMenu(fileName = "Int Data", menuName = "ScriptableObjects/Int Data")]
+    [CreateAssetMenu(fileName = "Int Data", menuName = "Scriptable Objects/Int Data")]
     public class IntDataScriptableObject : ScriptableObject
     {
         public int value;

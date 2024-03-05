@@ -1,10 +1,11 @@
+using Enemy;
 using Tools.Scripts.Scriptable_Objects;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Timeline;
 
 public class SideScrollerPlayerController : MonoBehaviour
 {
-    [SerializeField] private float playerSpeed;
     private Rigidbody2D rb;
     private Vector2 moveVector = new(0, 0);
     [SerializeField] private IntDataScriptableObject healthObj;
@@ -13,11 +14,16 @@ public class SideScrollerPlayerController : MonoBehaviour
     [SerializeField] private Transform groundCheck; // A Transform representing where to check if the player is grounded.
     [SerializeField] private float checkRadius; // Radius of the overlap circle.
     [SerializeField] private LayerMask groundLayer; // A LayerMask indicating what layer(s) to check for collisions to consider the player grounded.
+    [SerializeField] private LayerMask enemyLayer;
+    [SerializeField] private Weapon currentWeapon;
     private bool isJumping;
+    private SpriteRenderer spriteRenderer;
 
     void Start()
     {
+        spriteRenderer = GetComponent<SpriteRenderer>();
         rb = GetComponent<Rigidbody2D>();
+        DontDestroyOnLoad(gameObject);
     }
     
     void FixedUpdate()
@@ -32,13 +38,50 @@ public class SideScrollerPlayerController : MonoBehaviour
     {
         if (!isJumping)
         {
-            rb.AddForce(Vector2.up * jumpObj.value, ForceMode2D.Impulse);
+            rb.velocity = Vector2.up*jumpObj.value;
+        }
+    }
+
+    public void OnDash(InputAction.CallbackContext context)
+    {
+        if (context.ReadValueAsButton())
+        {
+            
         }
     }
 
     public void OnMove(InputAction.CallbackContext context)
     {
         moveVector = context.ReadValue<Vector2>();
+        spriteRenderer.flipX = moveVector.x > 0;
+        if (moveVector.x != 0)
+        {
+            spriteRenderer.flipX = moveVector.x < 0;
+        }
+    }
+
+    public void OnNormalAttack(InputAction.CallbackContext context)
+    {
+        if (context.ReadValueAsButton())
+        {
+            if (currentWeapon != null) currentWeapon.NormalAttack();
+        }
+    }
+
+    public void OnHeavyAttack(InputAction.CallbackContext context)
+    {
+        if (context.ReadValueAsButton())
+        {
+            if (currentWeapon != null) currentWeapon.HeavyAttack();
+        }
+    }
+
+    public void OnSpecialAttack(InputAction.CallbackContext context)
+    {
+        if (context.ReadValueAsButton())
+        {
+            if (currentWeapon != null) currentWeapon.SpecialAttack();
+        }
     }
 
     private bool IsJumping()
@@ -46,4 +89,5 @@ public class SideScrollerPlayerController : MonoBehaviour
         // Check if there's any collider coming into contact with the overlap circle.
         return Physics2D.OverlapCircle(groundCheck.position, checkRadius, groundLayer) == null;
     }
+    
 }

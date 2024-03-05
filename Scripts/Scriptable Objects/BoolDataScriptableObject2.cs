@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace Tools.Scripts.Scriptable_Objects
 {
-    [CreateAssetMenu(fileName = "Bool Data", menuName = "ScriptableObjects/Bool Data")]
+    [CreateAssetMenu(fileName = "Bool Data", menuName = "Scriptable Objects/Bool Data")]
     public class BoolDataScriptableObject : ScriptableObject
     {
         public bool value;

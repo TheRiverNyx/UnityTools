@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace Tools.Scripts.Scriptable_Objects
 {
-    [CreateAssetMenu(fileName = "vector 3 Data", menuName = "ScriptableObjects/Vector3Data")]
+    [CreateAssetMenu(fileName = "vector 3 Data", menuName = "Scriptable Objects/Vector3Data")]
     public class Vector3ScriptableObject : ScriptableObject
     {
         public Vector3 value;

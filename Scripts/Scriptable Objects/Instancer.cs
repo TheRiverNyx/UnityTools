@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.Tilemaps;
 using Random = UnityEngine.Random;
 
-[CreateAssetMenu]
+[CreateAssetMenu(fileName = "New Instancer", menuName = "Scriptable Objects/Instancer")]
 public class Instancer : ScriptableObject
 {
     public GameObject prefab;

@@ -1,7 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-[CreateAssetMenu]
+[CreateAssetMenu(fileName = "New ID",menuName = "Scriptable Objects/ID")]
 public class ID : ScriptableObject
 {
     
