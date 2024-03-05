@@ -1,9 +1,8 @@
 using System.Globalization;
 using UnityEngine;
-using TMPro;
 using UnityEngine.UI;
 
-[CreateAssetMenu(fileName = "Float Data", menuName = "ScriptableObjects/Float Data")]
+[CreateAssetMenu(fileName = "Float Data", menuName = "Scriptable Objects/Float Data")]
 public class FloatDataScriptableObject : ScriptableObject
 {
     public float value;

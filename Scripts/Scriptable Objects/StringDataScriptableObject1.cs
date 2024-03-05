@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace Tools.Scripts.Scriptable_Objects
 {
-    [CreateAssetMenu(fileName = "String Data", menuName = "ScriptableObjects/String Data")]
+    [CreateAssetMenu(fileName = "String Data", menuName = "Scriptable Objects/String Data")]
     public class StringDataScriptableObject : ScriptableObject
     {
         public string value;
