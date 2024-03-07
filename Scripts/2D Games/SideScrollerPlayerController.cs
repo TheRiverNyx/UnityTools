@@ -53,11 +53,15 @@ public class SideScrollerPlayerController : MonoBehaviour
     public void OnMove(InputAction.CallbackContext context)
     {
         moveVector = context.ReadValue<Vector2>();
-        spriteRenderer.flipX = moveVector.x > 0;
-        if (moveVector.x != 0)
-        {
-            spriteRenderer.flipX = moveVector.x < 0;
-        }
+    
+        Vector3 localScale = transform.localScale;
+    
+        if (moveVector.x > 0)
+            localScale.x = Mathf.Abs(localScale.x);
+        else if (moveVector.x < 0)
+            localScale.x = -Mathf.Abs(localScale.x);
+        
+        transform.localScale = localScale;
     }
 
     public void OnNormalAttack(InputAction.CallbackContext context)
@@ -89,5 +93,4 @@ public class SideScrollerPlayerController : MonoBehaviour
         // Check if there's any collider coming into contact with the overlap circle.
         return Physics2D.OverlapCircle(groundCheck.position, checkRadius, groundLayer) == null;
     }
-    
 }
