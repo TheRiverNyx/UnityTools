@@ -14,7 +14,7 @@ public class SideScrollerPlayerController : MonoBehaviour
     [SerializeField] private Transform groundCheck; // A Transform representing where to check if the player is grounded.
     [SerializeField] private float checkRadius; // Radius of the overlap circle.
     [SerializeField] private LayerMask groundLayer; // A LayerMask indicating what layer(s) to check for collisions to consider the player grounded.
-    [SerializeField] private LayerMask enemyLayer;
+    public LayerMask enemyLayer;
     [SerializeField] private Weapon currentWeapon;
     private bool isJumping;
     private SpriteRenderer spriteRenderer;
@@ -44,7 +44,7 @@ public class SideScrollerPlayerController : MonoBehaviour
 
     public void OnDash(InputAction.CallbackContext context)
     {
-        if (context.ReadValueAsButton())
+        if (context.performed)
         {
             
         }
@@ -66,7 +66,7 @@ public class SideScrollerPlayerController : MonoBehaviour
 
     public void OnNormalAttack(InputAction.CallbackContext context)
     {
-        if (context.ReadValueAsButton())
+        if (context.performed)
         {
             if (currentWeapon != null) currentWeapon.NormalAttack();
         }
