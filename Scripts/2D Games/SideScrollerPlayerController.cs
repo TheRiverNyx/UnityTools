@@ -1,8 +1,6 @@
-using Enemy;
 using Tools.Scripts.Scriptable_Objects;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.Timeline;
 
 public class SideScrollerPlayerController : MonoBehaviour
 {
