@@ -6,9 +6,7 @@ public class SideScrollerPlayerController : MonoBehaviour
 {
     private Rigidbody2D rb;
     private Vector2 moveVector = new(0, 0);
-    [SerializeField] private IntDataScriptableObject healthObj;
-    [SerializeField] private FloatDataScriptableObject moveObj;
-    [SerializeField] private FloatDataScriptableObject jumpObj;
+    [SerializeField] private PlayerData playerObj;
     [SerializeField] private Transform groundCheck; // A Transform representing where to check if the player is grounded.
     [SerializeField] private float checkRadius; // Radius of the overlap circle.
     [SerializeField] private LayerMask groundLayer; // A LayerMask indicating what layer(s) to check for collisions to consider the player grounded.
@@ -19,6 +17,7 @@ public class SideScrollerPlayerController : MonoBehaviour
 
     void Start()
     {
+        playerObj.health = playerObj.maxHealth;
         spriteRenderer = GetComponent<SpriteRenderer>();
         rb = GetComponent<Rigidbody2D>();
         DontDestroyOnLoad(gameObject);
@@ -28,7 +27,7 @@ public class SideScrollerPlayerController : MonoBehaviour
     {
         isJumping = IsJumping();
         var vector2 = rb.velocity;
-        vector2.x = moveObj.value * moveVector.x;
+        vector2.x = playerObj.speed * moveVector.x;
         rb.velocity = vector2;
     }
 
@@ -36,7 +35,7 @@ public class SideScrollerPlayerController : MonoBehaviour
     {
         if (!isJumping)
         {
-            rb.velocity = Vector2.up*jumpObj.value;
+            rb.velocity = Vector2.up*playerObj.jumpForce;
         }
     }
 
