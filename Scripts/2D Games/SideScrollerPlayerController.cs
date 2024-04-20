@@ -1,4 +1,3 @@
-using Tools.Scripts.Scriptable_Objects;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -33,6 +32,7 @@ public class SideScrollerPlayerController : MonoBehaviour
 
     public void OnJump(InputAction.CallbackContext context)
     {
+        Debug.Log("Jump!");
         if (!isJumping)
         {
             rb.velocity = Vector2.up*playerObj.jumpForce;
