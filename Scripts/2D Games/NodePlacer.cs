@@ -19,6 +19,7 @@ public class NodePlacer : MonoBehaviour
                 if (tilemap.GetTile(currentPos + Vector3Int.down) != null && tilemap.GetTile(currentPos) == null)
                 {
                     GameObject newTileObject = new GameObject("Tile_" + x + "_" + y);
+                    newTileObject.tag = "Pathfinding Node";
                     newTileObject.transform.parent = nodeRoot.transform;
                     newTileObject.transform.position = tilemap.GetCellCenterWorld(currentPos);
                 }
