@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -13,10 +14,19 @@ public class SideScrollerPlayerController : MonoBehaviour
     [SerializeField] private Weapon currentWeapon;
     private bool isJumping;
     private SpriteRenderer spriteRenderer;
-
+    private float dashForce;
+    private Vector2 dashVelocity = new(0,0);
+    public int remainingDashes;
+    public bool refillDashes;
+    public WaitForSeconds WaitForSeconds;
+    
     void Start()
     {
+        WaitForSeconds = new WaitForSeconds(playerObj.dashRefillTime);
+        refillDashes = true;
+        remainingDashes = playerObj.maxDashes;
         playerObj.health = playerObj.maxHealth;
+        dashForce = playerObj.dashForce;
         spriteRenderer = GetComponent<SpriteRenderer>();
         rb = GetComponent<Rigidbody2D>();
         DontDestroyOnLoad(gameObject);
@@ -30,9 +40,23 @@ public class SideScrollerPlayerController : MonoBehaviour
         rb.velocity = vector2;
     }
 
+    public IEnumerator RefillDash()
+    {
+        while (refillDashes)
+        {
+            if (remainingDashes < playerObj.maxDashes)
+            {
+                remainingDashes++;
+                yield return WaitForSeconds;
+            }
+            else
+            {
+                yield return WaitForSeconds;
+            }
+        }
+    }
     public void OnJump(InputAction.CallbackContext context)
     {
-        Debug.Log("Jump!");
         if (!isJumping)
         {
             rb.velocity = Vector2.up*playerObj.jumpForce;
@@ -43,6 +67,12 @@ public class SideScrollerPlayerController : MonoBehaviour
     {
         if (context.performed)
         {
+            if (remainingDashes > 0)
+            {
+                dashVelocity.x = rb.velocity.x * dashForce;
+                rb.AddForce(dashVelocity, ForceMode2D.Impulse);
+                remainingDashes--;
+            }
             
         }
     }
