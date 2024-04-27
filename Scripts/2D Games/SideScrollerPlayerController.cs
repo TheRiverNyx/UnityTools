@@ -1,3 +1,5 @@
+using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -17,20 +19,29 @@ public class SideScrollerPlayerController : MonoBehaviour
     private Vector2 dashVelocity = new(0,0);
     public int remainingDashes;
     public bool refillDashes;
-    public WaitForSeconds WaitForSeconds;
-    
+    private WaitForSeconds waitForSeconds;
+    public IInteractable currentInteractTarget;
+    public Coroutine RefillDashes;
+    public float dashDuration;
+    private float lastMoveDirection=1;
+
     void Start()
     {
-        WaitForSeconds = new WaitForSeconds(playerObj.dashRefillTime);
+        waitForSeconds = new WaitForSeconds(playerObj.dashRefillTime);
         refillDashes = true;
+        dashDuration = playerObj.dashDuration;
         remainingDashes = playerObj.maxDashes;
         playerObj.health = playerObj.maxHealth;
         dashForce = playerObj.dashForce;
         spriteRenderer = GetComponent<SpriteRenderer>();
         rb = GetComponent<Rigidbody2D>();
         DontDestroyOnLoad(gameObject);
+        RefillDashes = StartCoroutine(RefillDash());
     }
-    
+    public void SetInteractionTarget(IInteractable target)
+    {
+        currentInteractTarget = target;
+    }
     void FixedUpdate()
     {
         isJumping = IsJumping();
@@ -46,11 +57,11 @@ public class SideScrollerPlayerController : MonoBehaviour
             if (remainingDashes < playerObj.maxDashes)
             {
                 remainingDashes++;
-                yield return WaitForSeconds;
+                yield return waitForSeconds;
             }
             else
             {
-                yield return WaitForSeconds;
+                yield return waitForSeconds;
             }
         }
     }
@@ -64,30 +75,44 @@ public class SideScrollerPlayerController : MonoBehaviour
 
     public void OnDash(InputAction.CallbackContext context)
     {
-        if (context.performed)
+        if (context.performed && remainingDashes > 0)
         {
-            if (remainingDashes > 0)
-            {
-                dashVelocity.x = rb.velocity.x * dashForce;
-                rb.AddForce(dashVelocity, ForceMode2D.Impulse);
-                remainingDashes--;
-            }
-            
+            Debug.Log("Dash performed");
+            StartCoroutine(PerformDash());
+            remainingDashes--; 
         }
     }
 
+    private IEnumerator PerformDash()
+    {
+        float startTime = Time.time;
+    
+        while (Time.time < startTime + dashDuration)
+        {
+            transform.position += new Vector3(lastMoveDirection * dashForce * Time.deltaTime, 0, 0);
+            yield return null; // wait for next frame
+        }
+    }
+
+    public void OnInteract(InputAction.CallbackContext context)
+    {
+        if (context.performed&&currentInteractTarget!=null)
+        {
+            currentInteractTarget.Interact();
+        }
+    }
     public void OnMove(InputAction.CallbackContext context)
     {
         moveVector = context.ReadValue<Vector2>();
-    
-        Vector3 localScale = transform.localScale;
-    
+
         if (moveVector.x > 0)
-            localScale.x = Mathf.Abs(localScale.x);
+        {
+            lastMoveDirection = 1;
+        }
         else if (moveVector.x < 0)
-            localScale.x = -Mathf.Abs(localScale.x);
-        
-        transform.localScale = localScale;
+        {
+            lastMoveDirection = -1;
+        }
     }
 
     public void OnNormalAttack(InputAction.CallbackContext context)
