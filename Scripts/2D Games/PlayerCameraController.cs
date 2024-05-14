@@ -49,9 +49,9 @@ public class PlayerCameraController : MonoBehaviour
 
     private void UpdateZoomEffect()
     {
-        float zoomFactor = 1f + rb.velocity.magnitude / maxPlayerSpeed;
+        float zoomFactor = 1f + rb.linearVelocity.magnitude / maxPlayerSpeed;
         float currentDistance = Vector3.Distance(playerCamera.transform.position, transform.position);
-        float targetDistance = Mathf.Clamp(currentDistance + distanceChangeSpeed * rb.velocity.magnitude * zoomFactor, minDistance, maxDistance);
+        float targetDistance = Mathf.Clamp(currentDistance + distanceChangeSpeed * rb.linearVelocity.magnitude * zoomFactor, minDistance, maxDistance);
         playerCamera.transform.position = new Vector3(transform.position.x, transform.position.y+cameraHeightScale, -targetDistance);
     }
     private void AdjustCameraDistance()
